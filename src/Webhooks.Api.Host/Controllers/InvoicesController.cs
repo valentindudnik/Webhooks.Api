@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿//using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Webhooks.Models.Dtos;
 using Webhooks.Models.Parameters;
@@ -6,7 +6,7 @@ using Webhooks.Services.Interfaces;
 
 namespace Webhooks.Api.Host.Controllers
 {
-    [Authorize,
+    [//Authorize,
      ApiVersion("1.0"),
      Route("api/v{version:apiVersion}/[controller]"),
      ApiController]

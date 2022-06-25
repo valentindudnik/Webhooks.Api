@@ -28,6 +28,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Webhooks.Infrastructure\Webhooks.Infrastructure.csproj" />
     <ProjectReference Include="..\Webhooks.Models\Webhooks.Models.csproj" />
+    <ProjectReference Include="..\Webhooks.RabbitMQ.Models\Webhooks.RabbitMQ.Models.csproj" />
+    <ProjectReference Include="..\Webhooks.RabbitMQ\Webhooks.RabbitMQ.Client.csproj" />
     <ProjectReference Include="..\Webhooks.Services\Webhooks.Services.csproj" />
   </ItemGroup>
 

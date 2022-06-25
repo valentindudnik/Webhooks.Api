@@ -33,7 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.DataAccess.UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.Api.Host", "Webhooks.Api.Host\Webhooks.Api.Host.csproj", "{29E27109-9C16-4C1E-9565-084B42464777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhooks.Api.Client.Host", "Webhooks.Api.Client.Host\Webhooks.Api.Client.Host.csproj", "{4A3D634A-E4F4-44C2-8B13-F2AE7D799E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.Api.Client.Host", "Webhooks.Api.Client.Host\Webhooks.Api.Client.Host.csproj", "{4A3D634A-E4F4-44C2-8B13-F2AE7D799E5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.RabbitMQ.Client", "Webhooks.RabbitMQ\Webhooks.RabbitMQ.Client.csproj", "{260B75A8-FEDE-4345-B10D-A8D2D9765BA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webhooks.RabbitMQ.Models", "Webhooks.RabbitMQ.Models\Webhooks.RabbitMQ.Models.csproj", "{76B1924E-4A78-4892-A4BB-937C70874CD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,14 @@ Global
 		{4A3D634A-E4F4-44C2-8B13-F2AE7D799E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A3D634A-E4F4-44C2-8B13-F2AE7D799E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A3D634A-E4F4-44C2-8B13-F2AE7D799E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{260B75A8-FEDE-4345-B10D-A8D2D9765BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{260B75A8-FEDE-4345-B10D-A8D2D9765BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{260B75A8-FEDE-4345-B10D-A8D2D9765BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{260B75A8-FEDE-4345-B10D-A8D2D9765BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76B1924E-4A78-4892-A4BB-937C70874CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76B1924E-4A78-4892-A4BB-937C70874CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76B1924E-4A78-4892-A4BB-937C70874CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76B1924E-4A78-4892-A4BB-937C70874CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

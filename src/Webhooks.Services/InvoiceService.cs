@@ -5,6 +5,7 @@ using Webhooks.DataAccess.Models.Entities;
 using Webhooks.Models.Dtos;
 using Webhooks.Models.Exceptions;
 using Webhooks.Models.Parameters;
+using Webhooks.RabbitMQ.Client.Producers.Interfaces;
 using Webhooks.Services.Interfaces;
 
 namespace Webhooks.Services
@@ -12,14 +13,16 @@ namespace Webhooks.Services
     public class InvoiceService : IInvoiceService
     {
         private readonly IGenericRepository<Invoice> _repository;
+        private readonly IInvoiceProducer _invoiceProducer;
 
         private readonly IMapper _mapper;
         private readonly ILogger<InvoiceService> _logger;
 
-        public InvoiceService(IGenericRepository<Invoice> repository, IMapper mapper, ILogger<InvoiceService> logger)
+        public InvoiceService(IGenericRepository<Invoice> repository, IInvoiceProducer invoiceProducer, IMapper mapper, ILogger<InvoiceService> logger)
         {
             _repository = repository;
-            
+            _invoiceProducer = invoiceProducer;
+
             _mapper = mapper;
             _logger = logger;
         }
@@ -148,6 +151,10 @@ namespace Webhooks.Services
             await _repository.UpdateAsync(invoice);
 
             await _repository.SaveChangesAsync();
+
+            // Publish event: 'invoice_approved'
+            var approveInvoiceEvent = _mapper.Map<RabbitMQ.Models.Events.ApproveInvoiceEvent>(invoice);
+            _invoiceProducer.Approved(approveInvoiceEvent);
 
             _logger.LogInformation($"{nameof(Invoice)} with Id: {invoiceId} was approved successfully.");
         }

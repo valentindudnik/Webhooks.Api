@@ -10,6 +10,7 @@ using Webhooks.Infrastructure.Middlewares;
 using Webhooks.Infrastructure.Profiles;
 using Webhooks.Infrastructure.Validators;
 using Webhooks.Models.Dtos;
+using Webhooks.RabbitMQ.Client.Extensions;
 
 const string swaggerTitle = "Webhooks Api";
 const string swaggerVersion = "v1";
@@ -58,42 +59,46 @@ builder.Services.AddHealthChecks()
 builder.Services.AddApplicationInsightsTelemetry();
 
 // Configure Authentification
-// TODO:
+// TODO: TEMP
+
+// Configure RabbitMQ
+builder.Services.ConfigureRabbitMQClient(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure Swagger
 builder.Services.AddSwaggerGen(configure => {
-    configure.SwaggerDoc(swaggerVersion, new OpenApiInfo
-    {
-        Title = swaggerTitle,
-        Version = swaggerVersion
-    });
+    // TODO: TEMP
+    //configure.SwaggerDoc(swaggerVersion, new OpenApiInfo
+    //{
+    //    Title = swaggerTitle,
+    //    Version = swaggerVersion
+    //});
 
-    configure.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Name = swaggerAuthorizationName,
-        Type = SecuritySchemeType.Http,
-        BearerFormat = swaggerBearerFormat,
-        Scheme = JwtBearerDefaults.AuthenticationScheme
-    });
+    //configure.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    //{
+    //    In = ParameterLocation.Header,
+    //    Name = swaggerAuthorizationName,
+    //    Type = SecuritySchemeType.Http,
+    //    BearerFormat = swaggerBearerFormat,
+    //    Scheme = JwtBearerDefaults.AuthenticationScheme
+    //});
 
-    configure.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id=JwtBearerDefaults.AuthenticationScheme
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    //configure.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Type=ReferenceType.SecurityScheme,
+    //                Id=JwtBearerDefaults.AuthenticationScheme
+    //            }
+    //        },
+    //        Array.Empty<string>()
+    //    }
+    //});
 });
 
 var app = builder.Build();
@@ -109,9 +114,10 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthentication();
+// TODO: TEMP
+//app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapHealthChecks(healthzPath);
 

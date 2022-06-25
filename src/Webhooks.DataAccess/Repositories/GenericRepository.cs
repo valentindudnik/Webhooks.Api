@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using Webhooks.DataAccess.Interfaces;
 using Webhooks.DataAccess.Models.Entities;
@@ -97,12 +96,12 @@ namespace Webhooks.DataAccess.Repositories
 
         public async Task<TEntity?> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return await Where(predicate).FirstOrDefaultAsync();
+            return await Task.FromResult(Where(predicate).FirstOrDefault());
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await All().ToArrayAsync();
+            return await Task.FromResult(All());
         }
 
         public async Task<int> SaveChangesAsync()
