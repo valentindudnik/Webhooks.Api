@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Webhooks.DataAccess.Models\Webhooks.DataAccess.Models.csproj" />
+    <ProjectReference Include="..\Webhooks.Models\Webhooks.Models.csproj" />
+  </ItemGroup>
+
 </Project>
