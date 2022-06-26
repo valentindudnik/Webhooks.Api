@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Webhooks.RabbitMQ.Client" Version="1.0.0" />
+    <PackageReference Include="Webhooks.RabbitMQ.Models" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>

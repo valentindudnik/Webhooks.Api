@@ -1,6 +1,6 @@
-﻿using Webhooks.RabbitMQ.Models.Events;
+﻿using Webhooks.Models.Events;
 
-namespace Webhooks.RabbitMQ.Client.Producers.Interfaces
+namespace Webhooks.Services.Interfaces.Producers
 {
     public interface IInvoiceProducer
     {

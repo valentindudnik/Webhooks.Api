@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Webhooks.Models.Dtos;
 using Webhooks.Models.Parameters;
+using Webhooks.Models.Results;
 using Webhooks.Services.Interfaces;
 
 namespace Webhooks.Api.Host.Controllers
@@ -24,12 +25,13 @@ namespace Webhooks.Api.Host.Controllers
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost,
+         ProducesResponseType(typeof(EntityResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> AddAsync([FromBody] InvoiceParameters parameters)
         {
-            await _service.AddAsync(parameters);
+            var result = await _service.AddAsync(parameters);
 
-            return NoContent();
+            return Ok(result);
         }
 
         /// <summary>
@@ -37,7 +39,8 @@ namespace Webhooks.Api.Host.Controllers
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        [HttpPut("{invoiceId}")]
+        [HttpPut("{invoiceId}"),
+         ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid invoiceId, [FromBody] InvoiceParameters parameters)
         {
             await _service.UpdateAsync(invoiceId, parameters);
@@ -50,7 +53,8 @@ namespace Webhooks.Api.Host.Controllers
         /// </summary>
         /// <param name="invoiceId"></param>
         /// <returns></returns>
-        [HttpDelete("{invoiceId}")]
+        [HttpDelete("{invoiceId}"),
+         ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid invoiceId)
         {
             await _service.DeleteAsync(invoiceId);

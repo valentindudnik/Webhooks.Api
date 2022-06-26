@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Webhooks.RabbitMQ.Client.Interfaces;
-using Webhooks.RabbitMQ.Client.Producers.Interfaces;
+using Webhooks.RabbitMQ.Client.Producers;
 using Webhooks.RabbitMQ.Models.Common;
-using Webhooks.RabbitMQ.Models.Events;
+using Webhooks.Models.Events;
+using Webhooks.Services.Interfaces.Producers;
 
-namespace Webhooks.RabbitMQ.Client.Producers
+namespace Webhooks.Services.Producers
 {
     public class InvoiceProducer : RabbitMQProducer, IInvoiceProducer
     {

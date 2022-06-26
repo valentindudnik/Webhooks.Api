@@ -9,12 +9,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Webhooks.RabbitMQ.Client" Version="1.0.0" />
+    <PackageReference Include="Webhooks.RabbitMQ.Models" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Webhooks.DataAccess.Models\Webhooks.DataAccess.Models.csproj" />
     <ProjectReference Include="..\Webhooks.DataAccess\Webhooks.DataAccess.csproj" />
-    <ProjectReference Include="..\Webhooks.RabbitMQ\Webhooks.RabbitMQ.Client.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,8 +5,9 @@ using Webhooks.DataAccess.Models.Entities;
 using Webhooks.Models.Dtos;
 using Webhooks.Models.Exceptions;
 using Webhooks.Models.Parameters;
-using Webhooks.RabbitMQ.Client.Producers.Interfaces;
+using Webhooks.Models.Results;
 using Webhooks.Services.Interfaces;
+using Webhooks.Services.Interfaces.Producers;
 
 namespace Webhooks.Services
 {
@@ -27,7 +28,7 @@ namespace Webhooks.Services
             _logger = logger;
         }
 
-        public async Task AddAsync(InvoiceParameters parameters)
+        public async Task<EntityResult> AddAsync(InvoiceParameters parameters)
         {
             _logger.LogInformation($"{nameof(AddAsync)} with parameters.");
 
@@ -39,7 +40,11 @@ namespace Webhooks.Services
 
             await _repository.SaveChangesAsync();
 
+            var result = _mapper.Map<EntityResult>(entity);
+
             _logger.LogInformation($"{nameof(Invoice)} with Id: {entity.Id} was added successfully.");
+
+            return result;
         }
 
         public async Task UpdateAsync(Guid invoiceId, InvoiceParameters parameters)
@@ -71,6 +76,7 @@ namespace Webhooks.Services
             invoice.HasApproved = targetInvoice.HasApproved;
             invoice.DueDate = targetInvoice.DueDate;
             invoice.Updated = DateTime.UtcNow;
+            invoice.IsActive = true;
             
             await _repository.UpdateAsync(invoice);
 
@@ -83,7 +89,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(DeleteAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId);
+            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -92,7 +98,10 @@ namespace Webhooks.Services
                 throw new InvoiceNotFoundException(message);
             }
 
-            await _repository.DeleteAsync(x => x.Id == invoiceId);
+            invoice.Updated = DateTime.UtcNow;
+            invoice.IsActive = false;
+
+            await _repository.UpdateAsync(invoice);
             
             await _repository.SaveChangesAsync();
 
@@ -103,7 +112,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(GetAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId);
+            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -136,7 +145,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(ApproveAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId);
+            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -153,7 +162,7 @@ namespace Webhooks.Services
             await _repository.SaveChangesAsync();
 
             // Publish event: 'invoice_approved'
-            var approveInvoiceEvent = _mapper.Map<RabbitMQ.Models.Events.ApproveInvoiceEvent>(invoice);
+            var approveInvoiceEvent = _mapper.Map<Models.Events.ApproveInvoiceEvent>(invoice);
             _invoiceProducer.Approved(approveInvoiceEvent);
 
             _logger.LogInformation($"{nameof(Invoice)} with Id: {invoiceId} was approved successfully.");

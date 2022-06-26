@@ -101,7 +101,7 @@ namespace Webhooks.DataAccess.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await Task.FromResult(All());
+            return await Task.FromResult(Where(x => x.IsActive).ToArray());
         }
 
         public async Task<int> SaveChangesAsync()

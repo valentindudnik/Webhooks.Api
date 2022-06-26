@@ -1,4 +1,9 @@
-﻿namespace Webhooks.RabbitMQ.Models.Events
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Webhooks.Models.Enums;
+using Webhooks.RabbitMQ.Models.Events;
+
+namespace Webhooks.Models.Events
 {
     public class ApproveInvoiceEvent : BaseEvent
     {
@@ -16,5 +21,7 @@
         public DateTime? Date { get; set; }
         public DateTime? DueDate { get; set; }
         public bool HasApproved { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public EventType EventType { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
+using Webhooks.RabbitMQ.Client.Consumers.Interfaces;
 using Webhooks.RabbitMQ.Client.Interfaces;
 using Webhooks.RabbitMQ.Client.Producers;
 using Webhooks.RabbitMQ.Client.Producers.Interfaces;
@@ -10,11 +11,8 @@ namespace Webhooks.RabbitMQ.Client.Extensions
 {
     public static class RabbitMQExtensions
     {
-        public static void ConfigureRabbitMQClient(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureRabbitMQClient(this IServiceCollection services, RabbitMQConfiguration rabbitMQConfiguration)
         {
-            const string rabbitMQSectionName = "RabbitMQ";
-
-            var rabbitMQConfiguration = configuration.GetSection(rabbitMQSectionName).Get<RabbitMQConfiguration>();
             services.AddSingleton<IRabbitMQClient>(configure =>
             {
                 var factory = new ConnectionFactory
@@ -45,7 +43,12 @@ namespace Webhooks.RabbitMQ.Client.Extensions
 
             services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>();
             services.AddSingleton<INotificationProducer, NotificationProducer>();
-            services.AddSingleton<IInvoiceProducer, InvoiceProducer>();
+        }
+
+        public static void ConfigureRabbitMQListener(this IHostApplicationLifetime hostApplicationLifetime, string queueName, IRabbitMQConsumer consumer)
+        {
+            hostApplicationLifetime.ApplicationStarted.Register(() => consumer.Consume(queueName));
+            hostApplicationLifetime.ApplicationStopping.Register(() => consumer.Disconnect());
         }
     }
 }

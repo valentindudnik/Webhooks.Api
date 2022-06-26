@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
 using Webhooks.Infrastructure.Extensions;
 using Webhooks.Infrastructure.Middlewares;
@@ -11,6 +12,10 @@ using Webhooks.Infrastructure.Profiles;
 using Webhooks.Infrastructure.Validators;
 using Webhooks.Models.Dtos;
 using Webhooks.RabbitMQ.Client.Extensions;
+using Webhooks.RabbitMQ.Models.Configurations;
+
+using Webhooks.Services.Interfaces.Producers;
+using Webhooks.Services.Producers;
 
 const string swaggerTitle = "Webhooks Api";
 const string swaggerVersion = "v1";
@@ -26,6 +31,8 @@ const string healthzReadyPath = "/healthz/ready";
 const string healthzLivePath = "/healthz/live";
 const string healthzServiceUrlParamName = "HealthCheck:ServiceUrl";
 
+const string rabbitMQSectionName = "RabbitMQ";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Swagger Attributes
@@ -36,7 +43,8 @@ builder.Services.AddControllers(configure => {
     configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status403Forbidden));
     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(ErrorInfoDto), StatusCodes.Status404NotFound));
     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(ErrorInfoDto), StatusCodes.Status500InternalServerError));
-}).AddJsonOptions(configure => configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+}).AddJsonOptions(configure => configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+  .AddNewtonsoftJson(configure => configure.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 // Configure Api Versioning
 builder.Services.AddApiVersioning();
@@ -62,7 +70,9 @@ builder.Services.AddApplicationInsightsTelemetry();
 // TODO: TEMP
 
 // Configure RabbitMQ
-builder.Services.ConfigureRabbitMQClient(builder.Configuration);
+var rabbitMQConfiguration = builder.Configuration.GetSection(rabbitMQSectionName).Get<RabbitMQConfiguration>();
+builder.Services.ConfigureRabbitMQClient(rabbitMQConfiguration);
+builder.Services.AddSingleton<IInvoiceProducer, InvoiceProducer>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
