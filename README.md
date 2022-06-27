@@ -38,7 +38,7 @@ http://webhooks-api.westeurope.cloudapp.azure.com/swagger
 
 - Azure Kubernetes
 
-- ApplicationInsights
+- Application Insights
 
 - Docker
 
