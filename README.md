@@ -38,6 +38,8 @@ http://webhooks-api.westeurope.cloudapp.azure.com/swagger
 
 - Azure Kubernetes
 
+- ApplicationInsights
+
 - Docker
 
 - RabbitMQ (https://www.cloudamqp.com/)
