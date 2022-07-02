@@ -20,8 +20,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-    <PackageReference Include="Webhooks.RabbitMQ.Client" Version="1.0.1" />
-    <PackageReference Include="Webhooks.RabbitMQ.Models" Version="1.0.1" />
+    <PackageReference Include="Webhooks.RabbitMQ.Client" Version="1.0.2" />
+    <PackageReference Include="Webhooks.RabbitMQ.Models" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
