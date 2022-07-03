@@ -17,13 +17,13 @@ using Webhooks.RabbitMQ.Models.Configurations;
 using Webhooks.Services.Interfaces.Producers;
 using Webhooks.Services.Producers;
 
-const string swaggerTitle = "Webhooks Api";
-const string swaggerVersion = "v1";
+//const string swaggerTitle = "Webhooks Api";
+//const string swaggerVersion = "v1";
 const string swaggerUrl = "/swagger/v1/swagger.json";
 const string swaggerName = "Webhooks Api v1";
 const string swaggerMediaType = "application/json";
-const string swaggerAuthorizationName = "Authorization";
-const string swaggerBearerFormat = "JWT";
+//const string swaggerAuthorizationName = "Authorization";
+//const string swaggerBearerFormat = "JWT";
 
 const string healthzPath = "/healthz";
 const string healthzApiPath = "/api/healthz";
