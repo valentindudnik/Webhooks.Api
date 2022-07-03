@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using System.Net.Http.Json;
+using Webhooks.Models.Dtos;
+using Webhooks.Models.Parameters;
+using Webhooks.Models.Results;
 
 namespace Webhooks.Api.IntegrationTests.Common
 {
@@ -30,137 +34,109 @@ namespace Webhooks.Api.IntegrationTests.Common
             });
         }
 
-        //public async Task<BaseEntityDto> AddRentalAsync(RentalParameters rentalParameters)
-        //{
-        //    const string requestUri = "/api/v1/rentals";
+        public async Task<EntityResult> AddInvoiceAsync(InvoiceParameters parameters)
+        {
+            const string requestUri = "/api/v1/invoices";
 
-        //    BaseEntityDto? result;
+            EntityResult? result;
 
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.PostAsJsonAsync(requestUri, rentalParameters);
+            using (var client = CreateHttpClient())
+            {
+                var response = await client.PostAsJsonAsync(requestUri, parameters);
 
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
+                    throw new ApplicationException(errorInfo?.Message);
+                }
 
-        //        result = await response.Content.ReadFromJsonAsync<BaseEntityDto>();
-        //    }
+                result = await response.Content.ReadFromJsonAsync<EntityResult>();
+            }
 
-        //    return result!;
-        //}
+            return result!;
+        }
 
-        //public async Task<RentalDto> GetRentalAsync(int rentalId)
-        //{
-        //    var requestUri = $"/api/v1/rentals/{rentalId}";
+        public async Task<EntityResult> UpdateInvoiceAsync(int invoiceId, InvoiceParameters parameters)
+        {
+            var requestUri = $"/api/v1/invoices/{invoiceId}";
 
-        //    RentalDto? result;
+            EntityResult? result;
 
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.GetAsync(requestUri);
+            using (var client = CreateHttpClient())
+            {
+                var response = await client.PutAsJsonAsync(requestUri, parameters);
 
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
+                    throw new ApplicationException(errorInfo?.Message);
+                }
 
-        //        result = await response.Content.ReadFromJsonAsync<RentalDto>();
-        //    }
+                result = await response.Content.ReadFromJsonAsync<EntityResult>();
+            }
 
-        //    return result!;
-        //}
+            return result!;
+        }
 
-        //public async Task<BaseEntityDto> UpdateRentalAsync(int rentalId, RentalParameters rentalParameters)
-        //{
-        //    var requestUri = $"/api/v1/rentals/{rentalId}";
+        public async Task DeleteInvoiceAsync(int invoiceId)
+        {
+            var requestUri = $"/api/v1/invoices/{invoiceId}";
 
-        //    BaseEntityDto? result;
+            using (var client = CreateHttpClient())
+            {
+                var response = await client.DeleteAsync(requestUri);
 
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.PutAsJsonAsync(requestUri, rentalParameters);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
+                    throw new ApplicationException(errorInfo?.Message);
+                }
+            }
+        }
 
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
+        public async Task<EntityResult> GetInvoiceAsync(int invoiceId)
+        {
+            var requestUri = $"/api/v1/invoices/{invoiceId}";
 
-        //        result = await response.Content.ReadFromJsonAsync<BaseEntityDto>();
-        //    }
+            EntityResult? result;
 
-        //    return result!;
-        //}
+            using (var client = CreateHttpClient())
+            {
+                var response = await client.GetAsync(requestUri);
 
-        //public async Task<BaseEntityDto> AddBookingAsync(BookingParameters bookingParameters)
-        //{
-        //    const string requestUri = "/api/v1/bookings";
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
+                    throw new ApplicationException(errorInfo?.Message);
+                }
 
-        //    BaseEntityDto? result;
+                result = await response.Content.ReadFromJsonAsync<EntityResult>();
+            }
 
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.PostAsJsonAsync(requestUri, bookingParameters);
+            return result!;
+        }
 
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
+        public async Task<IEnumerable<InvoiceDto>> GetInvoicesAsync()
+        {
+            var requestUri = $"/api/v1/invoices";
 
-        //        result = await response.Content.ReadFromJsonAsync<BaseEntityDto>();
-        //    }
+            IEnumerable<InvoiceDto> result;
 
-        //    return result!;
-        //}
+            using (var client = CreateHttpClient())
+            {
+                var response = await client.GetAsync(requestUri);
 
-        //public async Task<CalendarDto> GetCalendarAsync(int rentalId, DateTime start, int nights)
-        //{
-        //    var requestUri = $"/api/v1/calendar?rentalId={rentalId}&start={start.Date}&nights={nights}";
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
+                    throw new ApplicationException(errorInfo?.Message);
+                }
 
-        //    CalendarDto? result;
+                result = await response.Content.ReadFromJsonAsync<IEnumerable<InvoiceDto>>();
+            }
 
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.GetAsync(requestUri);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
-
-        //        result = await response.Content.ReadFromJsonAsync<CalendarDto>();
-        //    }
-
-        //    return result!;
-        //}
-
-        //public async Task<BookingDto> GetBookingAsync(int bookingId)
-        //{
-        //    var requestUri = $"/api/v1/bookings/{bookingId}";
-
-        //    BookingDto? result;
-
-        //    using (var client = await CreateHttpClientAsync(hasAuthorization: true))
-        //    {
-        //        var response = await client.GetAsync(requestUri);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var errorInfo = await response.Content.ReadFromJsonAsync<ErrorInfoDto>();
-        //            throw new ApplicationException(errorInfo?.Message);
-        //        }
-
-        //        result = await response.Content.ReadFromJsonAsync<BookingDto>();
-        //    }
-
-        //    return result!;
-        //}
+            return result!;
+        }
 
         private HttpClient CreateHttpClient()
         {

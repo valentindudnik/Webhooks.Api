@@ -18,7 +18,7 @@ namespace Webhooks.DataAccess.Interfaces
         Task AddAsync(IEnumerable<TEntity> entities);
         Task DeleteAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate);
         Task UpdateAsync(TEntity entity);
-        Task<TEntity?> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity?> GetAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<int> SaveChangesAsync();
     }

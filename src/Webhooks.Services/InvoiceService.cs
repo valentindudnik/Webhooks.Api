@@ -51,7 +51,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(UpdateAsync)} with parameters.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId);
+            var invoice = await _repository.GetAsync(x => x.Id == invoiceId);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -89,7 +89,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(DeleteAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
+            var invoice = await _repository.GetAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -112,7 +112,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(GetAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
+            var invoice = await _repository.GetAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";
@@ -145,7 +145,7 @@ namespace Webhooks.Services
         {
             _logger.LogInformation($"{nameof(ApproveAsync)} with {nameof(invoiceId)}: {invoiceId}.");
 
-            var invoice = await _repository.FindAsync(x => x.Id == invoiceId && x.IsActive);
+            var invoice = await _repository.GetAsync(x => x.Id == invoiceId && x.IsActive);
             if (invoice == null)
             {
                 var message = $"{nameof(Invoice)} with {nameof(invoiceId)}: {invoiceId} not found.";

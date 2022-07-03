@@ -94,7 +94,7 @@ namespace Webhooks.DataAccess.Repositories
             await _context.GetCollection<TEntity>(typeof(TEntity).Name).DeleteManyAsync(predicate);
         }
 
-        public async Task<TEntity?> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> GetAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
             return await Task.FromResult(Where(predicate).FirstOrDefault());
         }

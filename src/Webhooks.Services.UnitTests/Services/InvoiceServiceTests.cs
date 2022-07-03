@@ -103,7 +103,7 @@ namespace Webhooks.Services.UnitTests.Services
                 Updated = DateTime.UtcNow
             };
 
-            _repositoryMock.Setup(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
+            _repositoryMock.Setup(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
 
             _repositoryMock.Setup(x => x.UpdateAsync(It.IsAny<Invoice>())).Returns(Task.FromResult(true));
 
@@ -111,7 +111,7 @@ namespace Webhooks.Services.UnitTests.Services
             await _service.UpdateAsync(invoiceId, parameters);
 
             // Assert
-            _repositoryMock.Verify(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
+            _repositoryMock.Verify(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
 
             _repositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Invoice>()), Times.Once());
         }
@@ -143,7 +143,7 @@ namespace Webhooks.Services.UnitTests.Services
                 Updated = DateTime.UtcNow
             };
 
-            _repositoryMock.Setup(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
+            _repositoryMock.Setup(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
 
             _repositoryMock.Setup(x => x.UpdateAsync(It.IsAny<Invoice>())).Returns(Task.FromResult(true));
 
@@ -153,7 +153,7 @@ namespace Webhooks.Services.UnitTests.Services
             // Assert
             _repositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Invoice>()), Times.Once());
 
-            _repositoryMock.Verify(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
+            _repositoryMock.Verify(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace Webhooks.Services.UnitTests.Services
                 Updated = DateTime.UtcNow
             };
 
-            _repositoryMock.Setup(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
+            _repositoryMock.Setup(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
 
             // Action
             var result = await _service.GetAsync(invoiceId);
@@ -191,7 +191,7 @@ namespace Webhooks.Services.UnitTests.Services
             // Assert
             Assert.NotNull(result);
 
-            _repositoryMock.Verify(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
+            _repositoryMock.Verify(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
         }
 
         [Fact]
@@ -260,7 +260,7 @@ namespace Webhooks.Services.UnitTests.Services
                 Updated = DateTime.UtcNow
             };
 
-            _repositoryMock.Setup(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
+            _repositoryMock.Setup(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>())).Returns(Task.FromResult<Invoice?>(invoice));
 
             _invoiceProducerMock.Setup(x => x.Approved(It.IsAny<ApproveInvoiceEvent>()));
 
@@ -268,7 +268,7 @@ namespace Webhooks.Services.UnitTests.Services
             await _service.ApproveAsync(invoiceId);
 
             // Assert
-            _repositoryMock.Verify(x => x.FindAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
+            _repositoryMock.Verify(x => x.GetAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Invoice, bool>>>()), Times.Once());
 
             _invoiceProducerMock.Verify(x => x.Approved(It.IsAny<ApproveInvoiceEvent>()));
         }
